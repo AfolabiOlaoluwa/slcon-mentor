@@ -45,6 +45,9 @@ This commits integrate social login with GitHub. I used the Python Social Auth l
 closes #78782
 ```
 
+### Trello Board / Slack
+We are using Trello and Slack to manage this project &mdash; you might want to join [the board here](https://trello.com/b/HCVML2aZ/slcon-mentorship) and also send a request to be added to our [Slack Channel](https://beyondelabs.slack.com).
+
 
 ## Contacts
 In case of any questions, reach out to @kevgathuku <kev@slcon.org> or @profnandaa <prof@slcon.org>
