@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `slcon_mentor` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `slcon_mentor`;
 -- MySQL dump 10.13  Distrib 5.6.24, for osx10.8 (x86_64)
 --
 -- Host: 127.0.0.1    Database: slcon_mentor
@@ -28,39 +26,6 @@ CREATE TABLE `interest` (
   `iid` int(11) NOT NULL AUTO_INCREMENT,
   `interest` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`iid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `link`
---
-
-DROP TABLE IF EXISTS `link`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link` (
-  `lid` int(11) NOT NULL AUTO_INCREMENT,
-  `ltid` int(11) DEFAULT NULL,
-  `mid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`lid`),
-  KEY `ltid` (`ltid`),
-  KEY `mid` (`mid`),
-  CONSTRAINT `link_ibfk_1` FOREIGN KEY (`ltid`) REFERENCES `link_type` (`ltid`),
-  CONSTRAINT `link_ibfk_2` FOREIGN KEY (`mid`) REFERENCES `member` (`mid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `link_type`
---
-
-DROP TABLE IF EXISTS `link_type`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `link_type` (
-  `ltid` int(11) NOT NULL AUTO_INCREMENT,
-  `link_type` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`ltid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -102,6 +67,22 @@ CREATE TABLE `member_interest` (
   KEY `mid` (`mid`),
   CONSTRAINT `member_interest_ibfk_1` FOREIGN KEY (`iid`) REFERENCES `interest` (`iid`),
   CONSTRAINT `member_interest_ibfk_2` FOREIGN KEY (`mid`) REFERENCES `member` (`mid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `member_link`
+--
+
+DROP TABLE IF EXISTS `member_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `member_link` (
+  `lid` int(11) NOT NULL AUTO_INCREMENT,
+  `mid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`lid`),
+  KEY `mid` (`mid`),
+  CONSTRAINT `link_ibfk_2` FOREIGN KEY (`mid`) REFERENCES `member` (`mid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,6 +143,23 @@ CREATE TABLE `project` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `project_link`
+--
+
+DROP TABLE IF EXISTS `project_link`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `project_link` (
+  `plid` int(11) NOT NULL AUTO_INCREMENT,
+  `link` varchar(250) DEFAULT NULL,
+  `pid` int(11) DEFAULT NULL,
+  PRIMARY KEY (`plid`),
+  KEY `pid` (`pid`),
+  CONSTRAINT `project_link_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `project` (`pid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `project_skill`
 --
 
@@ -204,4 +202,4 @@ CREATE TABLE `skill` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-30 22:28:50
+-- Dump completed on 2016-01-02 12:36:51
