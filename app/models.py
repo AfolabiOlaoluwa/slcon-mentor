@@ -35,8 +35,6 @@ class Skill(models.Model):
     """Skill model"""
 
     name = models.CharField(max_length=100)
-    # Optional field
-    rating = models.PositiveSmallIntegerField(blank=True)
 
     def __str__(self):
         return self.name
@@ -58,7 +56,6 @@ class Member(AbstractBaseUser):
     location = models.CharField(max_length=100)
     role = models.PositiveSmallIntegerField(choices=ROLES)
     interests = models.ManyToManyField(Interest)
-    skills = models.ManyToManyField(Skill)
 
     def __str__(self):
         return self.username
@@ -76,6 +73,18 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
+
+@python_2_unicode_compatible
+class MemberSkill(models.Model):
+    """MemberSkill model"""
+
+    skill = models.ForeignKey(Skill)
+    member = models.ForeignKey(Member)
+    # Optional field
+    rating = models.PositiveSmallIntegerField(blank=True)
+
+    def __str__(self):
+        return self.name
 
 @python_2_unicode_compatible
 class MemberLink(Link):
