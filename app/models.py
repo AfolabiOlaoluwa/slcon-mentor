@@ -77,7 +77,7 @@ class MemberSkill(models.Model):
     rating = models.PositiveSmallIntegerField(choices=RATINGS, blank=True)
 
     def __str__(self):
-        return self.name
+        return '{}: {} - {}'.format(self.member, self.skill, self.rating)
 
 
 @python_2_unicode_compatible
