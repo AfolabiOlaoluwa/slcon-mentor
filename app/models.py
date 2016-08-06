@@ -102,7 +102,7 @@ class Mentorship(models.Model):
     mentor = models.ForeignKey(Member, related_name='mentors')
     mentee = models.ForeignKey(Member, related_name='mentees')
     # Represents the skills for which the mentorship is being done
-    skills = models.ForeignKey(Skill)
+    skills = models.ManyToManyField(Skill)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(blank=True, null=True)
 
