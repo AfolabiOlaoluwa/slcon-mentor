@@ -45,9 +45,10 @@ class Member(AbstractBaseUser):
     location = models.CharField(max_length=100, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLES)
     interests = models.ManyToManyField(Interest)
-    mentorship = models.ManyToManyField('self', through='Mentorship',
-                                           symmetrical=False,
-                                           related_name='related_to')
+    mentorship = models.ManyToManyField('self',
+                                        through='Mentorship',
+                                        symmetrical=False,
+                                        related_name='related_to')
 
     USERNAME_FIELD = 'email'
 
@@ -78,6 +79,18 @@ class Member(AbstractBaseUser):
 
     def get_mentors(self):
         return self.related_to.filter(mentors__mentee=self)
+
+    def remove_mentor(self, mentor):
+        Mentorship.objects.filter(
+            mentee=self,
+            mentor=mentor).delete()
+        return
+
+    def remove_mentee(self, mentee):
+        Mentorship.objects.filter(
+            mentor=self,
+            mentee=mentee).delete()
+        return
 
     def __str__(self):
         return self.username
