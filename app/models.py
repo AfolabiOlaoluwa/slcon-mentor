@@ -89,7 +89,7 @@ class Mentorship(models.Model):
     # Represents the skills for which the mentorship is being done
     skills = models.ForeignKey(Skill)
     start_date = models.DateTimeField(default=timezone.now)
-    end_date = models.DateTimeField(blank=True)
+    end_date = models.DateTimeField(blank=True, null=True)
 
 
 @python_2_unicode_compatible
