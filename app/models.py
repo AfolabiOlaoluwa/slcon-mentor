@@ -58,6 +58,7 @@ class Member(AbstractBaseUser):
     def get_short_name(self):
         return self.username
 
+    # TODO: Receive skills as args
     def add_mentor(self, mentor, skills):
         # Returns a tuple of (object, created)
         mentorship, created = Mentorship.objects.get_or_create(
@@ -66,6 +67,7 @@ class Member(AbstractBaseUser):
             skills=skills)
         return mentorship
 
+    # TODO: Receive skills as args
     def add_mentee(self, mentee, skills):
         # Returns a tuple of (object, created)
         mentorship, created = Mentorship.objects.get_or_create(
@@ -105,6 +107,11 @@ class Mentorship(models.Model):
     skills = models.ManyToManyField(Skill)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(blank=True, null=True)
+
+    # TODO: Figure out how to avoid duplicate mentorships
+    # Skills cannot be part of the unique_together constraint
+    # class Meta:
+    #     unique_together = ('mentor', 'mentee')
 
     def __str__(self):
         return 'Mentor: {}, Mentee: {}'.format(self.mentor, self.mentee)
