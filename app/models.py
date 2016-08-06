@@ -3,11 +3,15 @@ from __future__ import unicode_literals
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils import timezone
 
 
 @python_2_unicode_compatible
 class Interest(models.Model):
-    """ Represents a Member's Interest """
+    """ Represents a Member's Interest
+        This should be a broad field rather than a specific skill
+        e.g. Design Concepts rather than Photoshop
+    """
 
     name = models.CharField(max_length=100)
 
@@ -38,12 +42,54 @@ class Member(AbstractBaseUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
-    location = models.CharField(max_length=100)
+    location = models.CharField(max_length=100, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLES)
     interests = models.ManyToManyField(Interest)
+    mentorship = models.ManyToManyField('self', through='Mentorship',
+                                           symmetrical=False,
+                                           related_name='+')
+
+    USERNAME_FIELD = 'email'
+
+    def get_full_name(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
+    def get_short_name(self):
+        return self.username
+
+    def add_mentor(self, mentor, skills):
+        mentorship = Mentorship.objects.get_or_create(
+            mentor=mentor,
+            mentee=self,
+            skills=skills)
+        return mentorship
+
+    def add_mentee(self, mentee, skills):
+        mentorship = Mentorship.objects.get_or_create(
+            mentor=self,
+            mentee=mentee,
+            skills=skills)
+        return mentorship
+
+    def get_mentees(self):
+        return self.mentorships.filter(mentees__mentor=self)
+
+    def get_mentors(self):
+        return self.mentorships.filter(mentors__mentee=self)
 
     def __str__(self):
         return self.username
+
+
+class Mentorship(models.Model):
+    """ Represents the Mentor-Mentee Relationship """
+
+    mentor = models.ForeignKey(Member, related_name='mentors')
+    mentee = models.ForeignKey(Member, related_name='mentees')
+    # Represents the skills for which the mentorship is being done
+    skills = models.ForeignKey(Skill)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(blank=True)
 
 
 @python_2_unicode_compatible
@@ -116,5 +162,3 @@ class ProjectLink(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.project, self.url)
-
-# TODO: Model relationship between Mentor and Mentee
