@@ -47,7 +47,7 @@ class Member(AbstractBaseUser):
     interests = models.ManyToManyField(Interest)
     mentorship = models.ManyToManyField('self', through='Mentorship',
                                            symmetrical=False,
-                                           related_name='+')
+                                           related_name='related_to')
 
     USERNAME_FIELD = 'email'
 
@@ -58,24 +58,26 @@ class Member(AbstractBaseUser):
         return self.username
 
     def add_mentor(self, mentor, skills):
-        mentorship = Mentorship.objects.get_or_create(
+        # Returns a tuple of (object, created)
+        mentorship, created = Mentorship.objects.get_or_create(
             mentor=mentor,
             mentee=self,
             skills=skills)
         return mentorship
 
     def add_mentee(self, mentee, skills):
-        mentorship = Mentorship.objects.get_or_create(
+        # Returns a tuple of (object, created)
+        mentorship, created = Mentorship.objects.get_or_create(
             mentor=self,
             mentee=mentee,
             skills=skills)
         return mentorship
 
     def get_mentees(self):
-        return self.mentorships.filter(mentees__mentor=self)
+        return self.mentorship.filter(mentees__mentor=self)
 
     def get_mentors(self):
-        return self.mentorships.filter(mentors__mentee=self)
+        return self.related_to.filter(mentors__mentee=self)
 
     def __str__(self):
         return self.username
@@ -90,6 +92,9 @@ class Mentorship(models.Model):
     skills = models.ForeignKey(Skill)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return 'Mentor: {}, Mentee: {}'.format(self.mentor, self.mentee)
 
 
 @python_2_unicode_compatible
