@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
@@ -106,8 +107,8 @@ class Member(AbstractBaseUser):
 class Mentorship(models.Model):
     """ Represents the Mentor-Mentee Relationship """
 
-    mentor = models.ForeignKey(Member, related_name='mentors')
-    mentee = models.ForeignKey(Member, related_name='mentees')
+    mentor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='mentors')
+    mentee = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='mentees')
     # Represents the skills for which the mentorship is being done
     skills = models.ManyToManyField(Skill)
     start_date = models.DateTimeField(default=timezone.now)
@@ -128,7 +129,7 @@ class Project(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.TextField()
-    members = models.ManyToManyField(Member)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL)
     skills = models.ManyToManyField(Skill)
 
     def __str__(self):
@@ -148,7 +149,7 @@ class MemberSkill(models.Model):
     )
 
     skill = models.ForeignKey(Skill)
-    member = models.ForeignKey(Member)
+    member = models.ForeignKey(settings.AUTH_USER_MODEL)
     # Optional field
     rating = models.PositiveSmallIntegerField(choices=RATINGS, blank=True)
 
@@ -167,7 +168,7 @@ class MemberLink(models.Model):
         (3, 'Other'),
     )
 
-    member = models.ForeignKey(Member)
+    member = models.ForeignKey(settings.AUTH_USER_MODEL)
     category = models.PositiveSmallIntegerField(choices=LINK_CATEGORIES)
     url = models.URLField()
 
