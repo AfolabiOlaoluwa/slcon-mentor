@@ -58,22 +58,27 @@ class Member(AbstractBaseUser):
     def get_short_name(self):
         return self.username
 
-    # TODO: Receive skills as args
+    # Receive skills as a list of Skill instances
     def add_mentor(self, mentor, skills):
         # Returns a tuple of (object, created)
         mentorship, created = Mentorship.objects.get_or_create(
             mentor=mentor,
-            mentee=self,
-            skills=skills)
+            mentee=self)
+        for skill in skills:
+            # Confirm we are adding instances of the Skill model only
+            if isinstance(skill, Skill):
+                mentorship.skills.add(skill)
         return mentorship
 
-    # TODO: Receive skills as args
+    # Receive skills as a list of Skill instances
     def add_mentee(self, mentee, skills):
         # Returns a tuple of (object, created)
         mentorship, created = Mentorship.objects.get_or_create(
             mentor=self,
-            mentee=mentee,
-            skills=skills)
+            mentee=mentee)
+        for skill in skills:
+            if isinstance(skill, Skill):
+                mentorship.skills.add(skill)
         return mentorship
 
     def get_mentees(self):
