@@ -39,7 +39,6 @@ class Member(AbstractBaseUser):
         (1, 'Mentor'),
     )
 
-    username = models.CharField(max_length=30, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
@@ -57,7 +56,7 @@ class Member(AbstractBaseUser):
         return '{} {}'.format(self.first_name, self.last_name)
 
     def get_short_name(self):
-        return self.username
+        return self.email
 
     # Receive skills as a list of Skill instances
     def add_mentor(self, mentor, skills):
