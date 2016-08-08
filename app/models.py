@@ -1,10 +1,53 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
+
+
+ROLES = (
+    (0, 'Mentee'),
+    (1, 'Mentor'),
+)
+
+# Custom user manager
+class MemberUserManager(BaseUserManager):
+
+    def create_user(self, email, role, password=None):
+        """
+        Creates and saves a Member with the given email, role and password.
+        """
+        if not email:
+            msg = "Members must have an email address"
+            raise ValueError(msg)
+
+        # Stores the valid IDs for a role
+        VALID_ROLES = [x[0] for x in ROLES]
+
+        if role not in VALID_ROLES:
+            msg = "Members must have a role of either a Mentor or Mentee"
+            raise ValueError(msg)
+
+        user = self.model(
+            email=MemberUserManager.normalize_email(email),
+            role=role
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, role, password):
+        """
+        Creates and saves a superuser with the given email,role and password.
+        This function requires the user to provide a password
+        """
+
+        user = self.create_user(email, password=password, role=role)
+        user.save(using=self._db)
+        return user
 
 
 @python_2_unicode_compatible
@@ -50,7 +93,10 @@ class Member(AbstractBaseUser):
                                         symmetrical=False,
                                         related_name='related_to')
 
+    objects = MemberUserManager()
+
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['role']
 
     def get_full_name(self):
         return '{} {}'.format(self.first_name, self.last_name)
@@ -106,8 +152,10 @@ class Member(AbstractBaseUser):
 class Mentorship(models.Model):
     """ Represents the Mentor-Mentee Relationship """
 
-    mentor = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='mentors')
-    mentee = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='mentees')
+    mentor = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='mentors')
+    mentee = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='mentees')
     # Represents the skills for which the mentorship is being done
     skills = models.ManyToManyField(Skill)
     start_date = models.DateTimeField(default=timezone.now)
