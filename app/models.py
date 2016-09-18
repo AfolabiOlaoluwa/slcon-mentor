@@ -12,6 +12,7 @@ ROLES = (
     (1, 'Mentor'),
 )
 
+
 # Custom user manager
 class MemberUserManager(BaseUserManager):
 
@@ -67,7 +68,7 @@ class Interest(models.Model):
 class Skill(models.Model):
     """ Skill model """
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
