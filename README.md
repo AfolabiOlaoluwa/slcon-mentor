@@ -1,11 +1,11 @@
 # slcon-mentor
 SLcon Mentorship Platform for software engineers and IT professionals. This platform seeks to connect brilliant talents in the _Silicon Savannah_ with each other &mdash; and also connect them with other talented people around the world through a mentorship programme.
 
-This is a project for _developers_ by _developers_. Everyone is welcome to make his contribution.
+This is a project for _developers_ by _developers_. Everyone is welcome to make their contribution.
 
 ## Technologies used
 
-- [Django 1.9](https://www.djangoproject.com/) 
+- [Django 1.9](https://www.djangoproject.com/)
 - [Django REST Framework](http://www.django-rest-framework.org/)
 - [Materialize UI Framework](http://materializecss.com/)
 
@@ -30,7 +30,7 @@ commit message body
 <fixes/closes/ref> <issue-number>
 ```
 
-The major tags are: 
+The major tags are:
 - _feature_: The commit adds a particular feature
 - _chore_: The commit is just some routine work, e.g. refactoring, renaming of file, etc.
 -  _fix_: The commit fixes a bug, etc.
