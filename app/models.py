@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
 
 
@@ -51,7 +50,6 @@ class MemberUserManager(BaseUserManager):
         return user
 
 
-@python_2_unicode_compatible
 class Interest(models.Model):
     """ Represents a Member's Interest
         This should be a broad field rather than a specific skill
@@ -64,7 +62,6 @@ class Interest(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class Skill(models.Model):
     """ Skill model """
 
@@ -74,7 +71,6 @@ class Skill(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class Member(AbstractBaseUser):
     """ Member model """
 
@@ -171,7 +167,6 @@ class Mentorship(models.Model):
         return 'Mentor: {}, Mentee: {}'.format(self.mentor, self.mentee)
 
 
-@python_2_unicode_compatible
 class Project(models.Model):
     """ Project model """
 
@@ -184,7 +179,6 @@ class Project(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class MemberSkill(models.Model):
     """ MemberSkill model """
 
@@ -205,7 +199,6 @@ class MemberSkill(models.Model):
         return '{}: {} - {}'.format(self.member, self.skill, self.rating)
 
 
-@python_2_unicode_compatible
 class MemberLink(models.Model):
     """ Member Links model """
 
@@ -224,7 +217,6 @@ class MemberLink(models.Model):
         return '{} - {}'.format(self.member, self.url)
 
 
-@python_2_unicode_compatible
 class ProjectLink(models.Model):
     """ Project Links model """
 
