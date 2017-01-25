@@ -9,10 +9,9 @@ This is a project for _developers_ by _developers_. Everyone is welcome to make 
 - [Django REST Framework](http://www.django-rest-framework.org/)
 - [Materialize UI Framework](http://materializecss.com/)
 
+# Development Setup
 
-### Trello Board / Slack
-We are using Trello and Slack to manage this project &mdash; you might want to join [the board here](https://trello.com/b/HCVML2aZ/slcon-mentorship) and also send a request to be added to our [Slack Channel](https://beyondelabs.slack.com).
-
+Plaese visit our [Installation](https://github.com/AndelaOSP/slcon-mentor/wiki/Installation-and-Local-Setup) wiki page to set up the project locally
 
 ## Contacts
 In case of any questions, reach out to @kevgathuku <kev@slcon.org> or @profnandaa <prof@slcon.org>
