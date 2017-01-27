@@ -1,4 +1,6 @@
 # slcon-mentor
+[![Build Status](https://travis-ci.org/AndelaOSP/slcon-mentor.svg?branch=develop)](https://travis-ci.org/AndelaOSP/slcon-mentor)
+
 SLcon Mentorship Platform for software engineers and IT professionals. This platform seeks to connect brilliant talents in the _Silicon Savannah_ with each other &mdash; and also connect them with other talented people around the world through a mentorship programme.
 
 This is a project for _developers_ by _developers_. Everyone is welcome to make their contribution.
