@@ -158,10 +158,10 @@ class Mentorship(models.Model):
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(blank=True, null=True)
 
-    # TODO: Figure out how to avoid duplicate mentorships
-    # Skills cannot be part of the unique_together constraint
-    # class Meta:
-    #     unique_together = ('mentor', 'mentee')
+    # TODO: Figure out how to make the Mentorship unique for each Skill
+    # skills cannot be part of the unique_together constraint, since it is a ManyToManyField
+    class Meta:
+        unique_together = ('mentor', 'mentee')
 
     def __str__(self):
         return 'Mentor: {}, Mentee: {}'.format(self.mentor, self.mentee)
