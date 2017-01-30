@@ -3,5 +3,9 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
+before_install:
+  - pip install six
 install: "pip install -r requirements.txt"
+before_script:
+  - python manage.py migrate
 script: python manage.py test
