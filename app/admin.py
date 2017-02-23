@@ -9,7 +9,7 @@ from .models import (Interest, Member, MemberLink, MemberSkill, Mentorship,
 
 class MemberAdmin(admin.ModelAdmin):
     fieldsets = [
-        ('User information', {'fields': ['username', 'first_name', 'last_name', 'email', 'location']}),
+        ('User information', {'fields': ['first_name', 'last_name', 'email', 'location']}),
         ('Mentorship information', {'fields': ['role', 'interests']}),
         ('Login information', {'fields': ['password', 'last_login']}),
     ]
