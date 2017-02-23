@@ -15,7 +15,7 @@ ROLES = (
 # Custom user manager
 class MemberUserManager(BaseUserManager):
 
-    def create_user(self, email, role, password=None):
+    def create_user(self, email, role, password=None, is_admin=False):
         """
         Creates and saves a Member with the given email, role and password.
         """
@@ -36,6 +36,7 @@ class MemberUserManager(BaseUserManager):
         )
 
         user.set_password(password)
+        user.is_admin = is_admin
         user.save(using=self._db)
         return user
 
@@ -45,7 +46,12 @@ class MemberUserManager(BaseUserManager):
         This function requires the user to provide a password
         """
 
-        user = self.create_user(email, password=password, role=role)
+        user = self.create_user(
+            email,
+            password=password,
+            role=role,
+            is_admin=True
+        )
         user.save(using=self._db)
         return user
 
@@ -85,10 +91,13 @@ class Member(AbstractBaseUser):
     location = models.CharField(max_length=100, blank=True)
     role = models.PositiveSmallIntegerField(choices=ROLES)
     interests = models.ManyToManyField(Interest)
-    mentorship = models.ManyToManyField('self',
-                                        through='Mentorship',
-                                        symmetrical=False,
-                                        related_name='related_to')
+    mentorship = models.ManyToManyField(
+        'self',
+        through='Mentorship',
+        symmetrical=False,
+        related_name='related_to'
+    )
+    is_admin = models.BooleanField(default=False)
 
     objects = MemberUserManager()
 
@@ -141,6 +150,22 @@ class Member(AbstractBaseUser):
             mentor=self,
             mentee=mentee).delete()
         return
+
+    def has_perm(self, perm, obj=None):
+        "Does the user have a specific permission?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    def has_module_perms(self, app_label):
+        "Does the user have permissions to view the app `app_label`?"
+        # Simplest possible answer: Yes, always
+        return True
+
+    @property
+    def is_staff(self):
+        "Is the user a member of staff?"
+        # Simplest possible answer: All admins are staff
+        return self.is_admin
 
     def __str__(self):
         return self.email
